@@ -3,21 +3,21 @@
   "Id": "__default_policy_ID",
   "Statement": [
     {
-      "Sid": "default",
+      "Sid": "__default_statement_ID",
       "Effect": "Allow",
       "Principal": {
         "AWS": "*"
       },
       "Action": [
-        "SNS:Subscribe",
-        "SNS:SetTopicAttributes",
-        "SNS:RemovePermission",
-        "SNS:Receive",
-        "SNS:Publish",
-        "SNS:ListSubscriptionsByTopic",
         "SNS:GetTopicAttributes",
+        "SNS:SetTopicAttributes",
+        "SNS:AddPermission",
+        "SNS:RemovePermission",
         "SNS:DeleteTopic",
-        "SNS:AddPermission"
+        "SNS:Subscribe",
+        "SNS:ListSubscriptionsByTopic",
+        "SNS:Publish",
+        "SNS:Receive"
       ],
       "Resource": "${resource}",
       "Condition": {
@@ -30,13 +30,7 @@
       "Sid": "client_account_subscribers",
       "Effect": "Allow",
       "Principal": {
-        "AWS": [
-        %{ for s in subscribers ~}
-        %{ for a in s.accounts ~}
-        ${a}
-        %{ endfor ~}
-        %{ endfor ~}
-        ]
+        "AWS": ${subscribers}
       },
       "Action": [
         "SNS:Subscribe",
